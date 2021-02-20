@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+  <requires lib="gtk" version="4.0"/>
   <menu id="app-menu">
     <section>
       <attribute name="id">preferences-section</attribute>
       <item>
-        <attribute name="label" translatable="yes">Show Pronunciation</attribute>
+        <attribute name="label" translatable="yes">_Show Pronunciation</attribute>
         <attribute name="action">app.pronunciation</attribute>
       </item>
     </section>
     <section>
       <attribute name="id">help-section</attribute>
       <item>
-        <attribute name="label" translatable="yes">Preferences</attribute>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
         <attribute name="action">app.shortcuts</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">About Dialect</attribute>
+        <attribute name="label" translatable="yes">_About Dialect</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>

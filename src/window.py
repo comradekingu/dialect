@@ -7,7 +7,7 @@ import threading
 from gettext import gettext as _
 from tempfile import NamedTemporaryFile
 
-from gi.repository import Gdk, GLib, GObject, Gtk, Gst, Handy
+from gi.repository import Gdk, GLib, GObject, Gtk, Gst, Adw
 
 from dialect.define import APP_ID, RES_PATH, MAX_LENGTH, TRANS_NUMBER
 from dialect.lang_selector import DialectLangSelector
@@ -16,7 +16,7 @@ from dialect.tts import TTS
 
 
 @Gtk.Template(resource_path=f'{RES_PATH}/window.ui')
-class DialectWindow(Handy.ApplicationWindow):
+class DialectWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'DialectWindow'
 
     # Get widgets
@@ -62,6 +62,8 @@ class DialectWindow(Handy.ApplicationWindow):
 
     notification_revealer = Gtk.Template.Child()
     notification_label = Gtk.Template.Child()
+
+    key_ctrlr = Gtk.Template.Child()
 
     # Translator
     translator = None
@@ -111,9 +113,6 @@ class DialectWindow(Handy.ApplicationWindow):
         bus.connect('message', self.on_gst_message)
         self.player_event = threading.Event()  # An event for letting us know when Gst is done playing
 
-        # Clipboard
-        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)  # This is only for the Clipboard button
-
         # Setup window
         self.setup()
 
@@ -127,7 +126,7 @@ class DialectWindow(Handy.ApplicationWindow):
                                   dark_mode)
 
         # Connect responsive design function
-        self.connect('check-resize', self.responsive_listener)
+        # self.connect('check-resize', self.responsive_listener)
         self.connect('destroy', self.save_translator_settings)
 
         self.setup_headerbar()
@@ -255,7 +254,7 @@ class DialectWindow(Handy.ApplicationWindow):
                                        self.on_src_lang_changed)
         # Set popover selector to button
         self.src_lang_btn.set_popover(self.src_lang_selector)
-        self.src_lang_selector.set_relative_to(self.src_lang_btn)
+        # self.src_lang_selector.set_parent(self.src_lang_btn)
 
         # Right lang selector
         self.dest_lang_selector = DialectLangSelector()
@@ -263,7 +262,7 @@ class DialectWindow(Handy.ApplicationWindow):
                                         self.on_dest_lang_changed)
         # Set popover selector to button
         self.dest_lang_btn.set_popover(self.dest_lang_selector)
-        self.dest_lang_selector.set_relative_to(self.dest_lang_btn)
+        # self.dest_lang_selector.set_parent(self.dest_lang_btn)
 
         self.langs_button_box.set_homogeneous(False)
 
@@ -273,7 +272,7 @@ class DialectWindow(Handy.ApplicationWindow):
         # Add menu to menu button
         builder = Gtk.Builder.new_from_resource(f'{RES_PATH}/menu.ui')
         menu = builder.get_object('app-menu')
-        menu_popover = Gtk.Popover.new_from_model(self.menu_btn, menu)
+        menu_popover = Gtk.PopoverMenu.new_from_model(menu)
         self.menu_btn.set_popover(menu_popover)
 
     def setup_actionbar(self):
@@ -290,7 +289,7 @@ class DialectWindow(Handy.ApplicationWindow):
         self.src_buffer.set_text(self.launch_text)
         self.src_buffer.connect('changed', self.on_src_text_changed)
         self.src_buffer.connect('end-user-action', self.user_action_ended)
-        self.connect('key-press-event', self.update_trans_button)
+        self.key_ctrlr.connect('key-pressed', self.update_trans_button)
         # Clear button
         self.clear_btn.connect('clicked', self.ui_clear)
         # Paste button
@@ -341,8 +340,8 @@ class DialectWindow(Handy.ApplicationWindow):
             # Change translation box orientation
             self.translator_box.set_orientation(Gtk.Orientation.VERTICAL)
             # Change lang selectors position
-            self.src_lang_selector.set_relative_to(self.src_lang_btn2)
-            self.dest_lang_selector.set_relative_to(self.dest_lang_btn2)
+            # self.src_lang_selector.set_parent(self.src_lang_btn2)
+            # self.dest_lang_selector.set_parent(self.dest_lang_btn2)
         else:
             # Hide actionbar
             self.actionbar.set_reveal_child(False)
@@ -351,8 +350,8 @@ class DialectWindow(Handy.ApplicationWindow):
             # Reset translation box orientation
             self.translator_box.set_orientation(Gtk.Orientation.HORIZONTAL)
             # Reset lang selectors position
-            self.src_lang_selector.set_relative_to(self.src_lang_btn)
-            self.dest_lang_selector.set_relative_to(self.dest_lang_btn)
+            # self.src_lang_selector.set_parent(self.src_lang_btn)
+            # self.dest_lang_selector.set_parent(self.dest_lang_btn)
 
     def translate(self, text):
         """
@@ -576,14 +575,19 @@ class DialectWindow(Handy.ApplicationWindow):
             self.dest_buffer.get_end_iter(),
             True
         )
-        self.clipboard.set_text(dest_text, -1)
-        self.clipboard.store()
+        clipboard = self.dest_buffer.get_clipboard()
+        clipboard.set_text(dest_text)
 
     def ui_paste(self, _button):
-        text = self.clipboard.wait_for_text()
-        if text is not None:
-            end_iter = self.src_buffer.get_end_iter()
-            self.src_buffer.insert(end_iter, text)
+        clipboard = self.src_buffer.get_clipboard()
+        provider = clipboard.get_content()
+
+        if provider is not None:
+            print(provider.get_string())
+        # text = self.clipboard.wait_for_text()
+        # if text is not None:
+        #     end_iter = self.src_buffer.get_end_iter()
+        #     self.src_buffer.insert(end_iter, text)
 
     def ui_voice(self, _button):
         dest_text = self.dest_buffer.get_text(
@@ -636,26 +640,26 @@ class DialectWindow(Handy.ApplicationWindow):
             self.voice_loading = False
 
     # This starts the translation if Ctrl+Enter button is pressed
-    def update_trans_button(self, button, keyboard):
-        modifiers = keyboard.get_state() & Gtk.accelerator_get_default_mod_mask()
+    def update_trans_button(self, _button, keyval, _keycode, state):
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
 
         control_mask = Gdk.ModifierType.CONTROL_MASK
         shift_mask = Gdk.ModifierType.SHIFT_MASK
-        unicode_key_val = Gdk.keyval_to_unicode(keyboard.keyval)
+        unicode_key_val = Gdk.keyval_to_unicode(keyval)
         if (GLib.unichar_isgraph(chr(unicode_key_val)) and
                 modifiers in (shift_mask, 0) and not self.src_text.is_focus()):
             self.src_text.grab_focus()
 
         if not self.settings.get_boolean('live-translation'):
             if control_mask == modifiers:
-                if keyboard.keyval == Gdk.KEY_Return:
+                if keyval == Gdk.KEY_Return:
                     if not self.settings.get_value('translate-accel'):
-                        self.translation(button)
+                        self.translation(None)
                         return Gdk.EVENT_STOP
                     return Gdk.EVENT_PROPAGATE
-            elif keyboard.keyval == Gdk.KEY_Return:
+            elif keyval == Gdk.KEY_Return:
                 if self.settings.get_value('translate-accel'):
-                    self.translation(button)
+                    self.translation(None)
                     return Gdk.EVENT_STOP
                 return Gdk.EVENT_PROPAGATE
 

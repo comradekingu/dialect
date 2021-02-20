@@ -7,14 +7,14 @@ import re
 import threading
 from gettext import gettext as _
 
-from gi.repository import Gio, GLib, Gtk, Handy
+from gi.repository import Gio, GLib, Gtk, Adw
 
 from dialect.define import RES_PATH
 from dialect.translators import TRANSLATORS
 
 
 @Gtk.Template(resource_path=f'{RES_PATH}/preferences.ui')
-class DialectPreferencesWindow(Handy.PreferencesWindow):
+class DialectPreferencesWindow(Adw.PreferencesWindow):
     __gtype_name__ = 'DialectPreferencesWindow'
 
     parent = NotImplemented
@@ -50,20 +50,20 @@ class DialectPreferencesWindow(Handy.PreferencesWindow):
         self.set_search_enabled(False)
 
         # Setup translate accel combo row
-        model = Gio.ListStore.new(Handy.ValueObject)
+        model = Gio.ListStore.new(Adw.ValueObject)
         options = ['Ctrl + Enter', 'Enter']
         for count, value in enumerate(options):
-            model.insert(count, Handy.ValueObject.new(value))
+            model.insert(count, Adw.ValueObject.new(value))
         self.translate_accel.bind_name_model(model,
-                                             Handy.ValueObject.dup_string)
+                                             Adw.ValueObject.dup_string)
 
         # Setup backends combo row
-        model = Gio.ListStore.new(Handy.ValueObject)
+        model = Gio.ListStore.new(Adw.ValueObject)
         options = [translator.prettyname for translator in TRANSLATORS]
         for count, value in enumerate(options):
-            model.insert(count, Handy.ValueObject.new(value))
+            model.insert(count, Adw.ValueObject.new(value))
         self.backend.bind_name_model(model,
-                                     Handy.ValueObject.dup_string)
+                                     Adw.ValueObject.dup_string)
 
         # Bind preferences with GSettings
         self.settings.bind('dark-mode', self.dark_mode, 'active',

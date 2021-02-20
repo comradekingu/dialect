@@ -1,7 +1,7 @@
 {
     "app-id" : "com.github.gi_lom.dialect",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "3.38",
+    "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
     "command" : "dialect",
     "finish-args" : [
@@ -16,25 +16,22 @@
     "modules" : [
         "pypi-dependencies.json",
         {
-            "name" : "libhandy",
-            "buildsystem" : "meson",
-            "config-opts" : [
+            "name": "libadwaita",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dintrospection=enabled",
                 "-Dgtk_doc=false",
                 "-Dtests=false",
                 "-Dexamples=false",
                 "-Dvapi=false",
                 "-Dglade_catalog=disabled"
             ],
-            "cleanup" : [
-                "/include",
-                "/lib/pkgconfig"
-            ],
-            "sources" : [
+            "sources": [
                 {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/libhandy.git",
-                    "tag" : "1.1.90",
-                    "commit" : "89a1610b62533c9d6c5267cfac0108e724df25ba"
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/exalm/libadwaita.git",
+                    "branch": "main",
+                    "commit": "cb4f740c07c2fdddc137e73c139c2adcbad34d02"
                 }
             ]
         },

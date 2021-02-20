@@ -8,12 +8,12 @@ import sys
 from gettext import gettext as _
 
 import gi
-gi.require_version('Gdk', '3.0')
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gdk', '4.0')
+gi.require_version('Gtk', '4.0')
 gi.require_version('Gst', '1.0')
-gi.require_version('Handy', '1')
+gi.require_version('Adw', '1')
 
-from gi.repository import Gdk, Gio, GLib, Gtk, Gst, Handy
+from gi.repository import Gdk, Gio, GLib, Gtk, Gst, Adw
 
 from dialect.define import APP_ID, RES_PATH
 from dialect.window import DialectWindow
@@ -69,15 +69,16 @@ class Dialect(Gtk.Application):
         GLib.set_prgname('com.github.gi_lom.dialect')
         self.setup_actions()
 
-        Handy.init()  # Init Handy
+        Adw.init()  # Init Handy
         Gst.init(None)  # Init Gst
 
         # Load CSS
-        css_provider = Gtk.CssProvider()
-        css_provider.load_from_resource(f'{RES_PATH}/style.css')
-        screen = Gdk.Screen.get_default()
-        style_context = Gtk.StyleContext()
-        style_context.add_provider_for_screen(screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+        # Broken in GTK4, prevents even debugging the rest of the application.
+        # css_provider = Gtk.CssProvider()
+        # css_provider.load_from_resource(f'{RES_PATH}/style.css')
+        # display = Gdk.Display.get_default()
+        # style_context = Gtk.StyleContext()
+        # style_context.add_provider_for_display(display, css_provider, 500)
 
     def setup_actions(self):
         """ Setup menu actions """
