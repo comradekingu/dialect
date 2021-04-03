@@ -99,8 +99,7 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
         self.backend_instance_reset.connect('clicked', self._on_reset_backend_instance)
         self.__check_instance_support()
 
-        self.instance_save_image = Gtk.Image.new_from_icon_name(
-            'emblem-ok-symbolic', Gtk.IconSize.BUTTON)
+        self.instance_save_image = Gtk.Image.new_from_icon_name('emblem-ok-symbolic')
         self.backend_instance_save.add(self.instance_save_image)
         self.instance_save_spinner = Gtk.Spinner()
         self.instance_save_image.show()
@@ -109,8 +108,7 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
         self.error_popover = Gtk.Popover(
             relative_to=self.backend_instance, can_focus=False, modal=False)
         self.error_label = Gtk.Label(label='Not a valid instance')
-        error_icon = Gtk.Image.new_from_icon_name(
-            'dialog-error-symbolic', Gtk.IconSize.LARGE_TOOLBAR)
+        error_icon = Gtk.Image.new_from_icon_name('dialog-error-symbolic')
         error_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin=8, spacing=8)
         error_box.pack_start(error_icon, False, False, 0)
         error_box.pack_start(self.error_label, False, False, 0)

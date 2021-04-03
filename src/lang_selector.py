@@ -101,7 +101,7 @@ class LangRow(Gtk.ListBoxRow):
                           margin_start=4)
         self.get_style_context().add_class('langselector')
         row_box.pack_start(label, False, True, 0)
-        self.selected_icon = Gtk.Image.new_from_icon_name('object-select-symbolic', Gtk.IconSize.BUTTON)
+        self.selected_icon = Gtk.Image.new_from_icon_name('object-select-symbolic')
         row_box.pack_start(self.selected_icon, False, True, 0)
         self.add(row_box)
         self.show_all()

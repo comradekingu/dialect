@@ -204,7 +204,7 @@ class DialectWindow(Adw.ApplicationWindow):
         ).start()
 
     def on_listen_failed(self):
-        self.voice_btn.set_image(self.voice_warning)
+        self.voice_btn.set_child(self.voice_warning)
         self.voice_spinner.stop()
         self.voice_btn.set_tooltip_text(_('A network issue has occured. Retry?'))
         self.send_notification(_('A network issue has occured.\nPlease try again.'))
@@ -309,11 +309,9 @@ class DialectWindow(Adw.ApplicationWindow):
         self.trans_spinner.hide()
         self.trans_warning.hide()
         # Voice button prep-work
-        self.voice_warning = Gtk.Image.new_from_icon_name(
-            'dialog-warning-symbolic', Gtk.IconSize.BUTTON)
+        self.voice_warning = Gtk.Image.new_from_icon_name('dialog-warning-symbolic')
         self.voice_btn.connect('clicked', self.ui_voice)
-        self.voice_image = Gtk.Image.new_from_icon_name(
-            'audio-speakers-symbolic', Gtk.IconSize.BUTTON)
+        self.voice_image = Gtk.Image.new_from_icon_name('audio-speakers-symbolic')
         self.voice_spinner = Gtk.Spinner()  # For use while audio is running or still loading.
         self.toggle_voice_spinner(True)
 
@@ -393,7 +391,7 @@ class DialectWindow(Adw.ApplicationWindow):
     def toggle_voice_spinner(self, active=True):
         if active:
             self.voice_btn.set_sensitive(False)
-            self.voice_btn.set_image(self.voice_spinner)
+            self.voice_btn.set_child(self.voice_spinner)
             self.voice_spinner.start()
         else:
             dest_text = self.dest_buffer.get_text(
@@ -405,7 +403,7 @@ class DialectWindow(Adw.ApplicationWindow):
                 self.dest_lang_selector.get_property('selected') in self.tts_langs
                 and dest_text != ''
             )
-            self.voice_btn.set_image(self.voice_image)
+            self.voice_btn.set_child(self.voice_image)
             self.voice_spinner.stop()
 
     def on_src_lang_changed(self, _obj, _param):
