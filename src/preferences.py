@@ -110,11 +110,10 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
         self.error_label = Gtk.Label(label='Not a valid instance')
         error_icon = Gtk.Image.new_from_icon_name('dialog-error-symbolic')
         error_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin=8, spacing=8)
-        error_box.pack_start(error_icon, False, False, 0)
-        error_box.pack_start(self.error_label, False, False, 0)
+        error_box.prepend(error_icon)
+        error_box.prepend(self.error_label)
         self.error_popover.add(error_box)
         self.error_popover.set_position(Gtk.PositionType.BOTTOM)
-        error_box.show_all()
         self.error_popover.hide()
 
         # Search Provider

@@ -43,7 +43,7 @@ class DialectLangSelector(Gtk.Popover):
 
     def set_languages(self, languages):
         # Clear list
-        children = self.lang_list.get_children()
+        children = self.lang_list
         for child in children:
             self.lang_list.remove(child)
 
@@ -57,12 +57,12 @@ class DialectLangSelector(Gtk.Popover):
         self.recent_list.insert(LangRow(code, name, row_selected), position)
 
     def clear_recent(self):
-        children = self.recent_list.get_children()
+        children = self.recent_list
         for child in children:
             self.recent_list.remove(child)
 
     def refresh_selected(self):
-        for lang in self.lang_list.get_children():
+        for lang in self.lang_list:
             lang.selected = (lang.code == self.selected)
 
     def _activated(self, _list, row):
@@ -96,15 +96,15 @@ class LangRow(Gtk.ListBoxRow):
         self.name = name
 
         row_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-        label = Gtk.Label(self.name,
-                          halign=Gtk.Align.START,
-                          margin_start=4)
+        label = Gtk.Label()
+        label.set_text(self.name)
+        label.set_halign(Gtk.Align.START)
+        label.set_margin_start(4)
         self.get_style_context().add_class('langselector')
-        row_box.pack_start(label, False, True, 0)
+        row_box.prepend(label)
         self.selected_icon = Gtk.Image.new_from_icon_name('object-select-symbolic')
-        row_box.pack_start(self.selected_icon, False, True, 0)
-        self.add(row_box)
-        self.show_all()
+        row_box.prepend(self.selected_icon)
+        self.set_child(row_box)
         self.selected = selected
 
     @property

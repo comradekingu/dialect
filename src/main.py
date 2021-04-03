@@ -142,7 +142,6 @@ class Dialect(Gtk.Application):
         about.set_transient_for(self.window)
         about.set_logo_icon_name(APP_ID)
         about.set_version(self.version)
-        about.connect('response', lambda dialog, response: dialog.destroy())
         about.present()
 
     def on_quit(self, _action, _param):
