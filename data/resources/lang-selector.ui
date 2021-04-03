@@ -2,11 +2,9 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="DialectLangSelector" parent="GtkPopover">
-    <property name="can_focus">False</property>
     <property name="height_request">250</property>
     <child>
       <object class="GtkBox">
-        <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <child>
@@ -24,18 +22,14 @@
             <property name="margin_end">8</property>
             <child>
               <object class="GtkViewport">
-                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkBox">
-                    <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkRevealer" id="revealer">
-                        <property name="can_focus">False</property>
                         <property name="reveal-child">True</property>
                         <child>
                           <object class="GtkBox">
-                            <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkListBox" id="recent_list">
