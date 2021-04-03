@@ -315,6 +315,9 @@
                                         <property name="margin-end">9</property>
                                         <property name="top-margin">9</property>
                                         <property name="bottom-margin">9</property>
+                                        <child>
+                                          <object class="GtkEventControllerKey" id="src_key_ctrlr"/>
+                                        </child>
                                       </object>
                                     </property>
                                   </object>
@@ -654,7 +657,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkEventControllerKey" id="key_ctrlr"/>
+      <object class="GtkEventControllerKey" id="window_key_ctrlr"/>
     </child>
   </template>
   <object class="GtkSizeGroup">

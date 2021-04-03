@@ -63,7 +63,8 @@ class DialectWindow(Adw.ApplicationWindow):
     notification_revealer = Gtk.Template.Child()
     notification_label = Gtk.Template.Child()
 
-    key_ctrlr = Gtk.Template.Child()
+    src_key_ctrlr = Gtk.Template.Child()
+    # window_key_ctrlr = Gtk.Template.Child()
 
     # Translator
     translator = None
@@ -289,7 +290,9 @@ class DialectWindow(Adw.ApplicationWindow):
         self.src_buffer.set_text(self.launch_text)
         self.src_buffer.connect('changed', self.on_src_text_changed)
         self.src_buffer.connect('end-user-action', self.user_action_ended)
-        self.key_ctrlr.connect('key-pressed', self.update_trans_button)
+        # Detect typing
+        # self.window_key_ctrlr.connect('key-pressed', self.update_trans_button)
+        self.src_key_ctrlr.connect('key-pressed', self.update_trans_button)
         # Clear button
         self.clear_btn.connect('clicked', self.ui_clear)
         # Paste button
@@ -642,11 +645,12 @@ class DialectWindow(Adw.ApplicationWindow):
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
 
         control_mask = Gdk.ModifierType.CONTROL_MASK
-        shift_mask = Gdk.ModifierType.SHIFT_MASK
-        unicode_key_val = Gdk.keyval_to_unicode(keyval)
-        if (GLib.unichar_isgraph(chr(unicode_key_val)) and
-                modifiers in (shift_mask, 0) and not self.src_text.is_focus()):
-            self.src_text.grab_focus()
+        # Disabled until I find better ways to make it work.
+        # shift_mask = Gdk.ModifierType.SHIFT_MASK
+        # unicode_key_val = Gdk.keyval_to_unicode(keyval)
+        # if (GLib.unichar_isgraph(chr(unicode_key_val)) and
+        #         modifiers in (shift_mask, 0) and not self.src_text.is_focus()):
+        #     self.src_text.grab_focus()
 
         if not self.settings.get_boolean('live-translation'):
             if control_mask == modifiers:
