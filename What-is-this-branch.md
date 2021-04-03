@@ -13,10 +13,9 @@ Everything else either doesn't work or has issues. In the current state:
 - Translation works, including Enter or Ctrl+Enter to search.
 - Audio, pronunciations and mistakes work.
 - Preferences dialog doesn't work.
-- CSS does not get loaded. So everything looks and feels broken.
+- CSS gets loaded now but everything still looks and feels broken.
 - Mobile mode doesn't work.
 - Language switcher works but is full of bugs.
 - Anything clipboard-related is broken.
-- Zombie process when exiting.
 - Focus issues.
 - A lot of other weird issues.
