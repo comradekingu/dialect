@@ -1,7 +1,7 @@
 {
     "app-id" : "com.github.gi_lom.dialect",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "master",
+    "runtime-version" : "40",
     "sdk" : "org.gnome.Sdk",
     "command" : "dialect",
     "finish-args" : [
@@ -29,9 +29,9 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "https://gitlab.gnome.org/exalm/libadwaita.git",
+                    "url": "https://gitlab.gnome.org/GNOME/libadwaita.git",
                     "branch": "main",
-                    "commit": "cb4f740c07c2fdddc137e73c139c2adcbad34d02"
+                    "commit": "594eb987c57e4d20370cc20520871f230ff02ae2"
                 }
             ]
         },
