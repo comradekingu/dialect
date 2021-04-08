@@ -18,15 +18,12 @@
 }
 
 .translation-frame  {
-  background: @theme_bg_color;
+  background-color: @theme_base_color;
   border-top-left-radius: 9px;
   border-top-right-radius: 9px;
 }
 .translation-frame:disabled  {
-  background: @insensitive_bg_color;
-}
-.translation-frame:backdrop  {
-  background: @theme_unfocused_bg_color;
+  background-color: @insensitive_bg_color;
 }
 
 .translation-frame scrollbar {
