@@ -9,15 +9,12 @@
     <property name="window_position">center-on-parent</property>
     <child>
       <object class="AdwPreferencesPage">
-        <property name="visible">True</property>
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Appearance</property>
-            <property name="visible">True</property>
             <child>
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Dark Mode</property>
-                <property name="visible">True</property>
                 <property name="activatable_widget">dark_mode</property>
                 <child>
                   <object class="GtkSwitch" id="dark_mode">
@@ -31,12 +28,10 @@
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Behavior</property>
-            <property name="visible">True</property>
             <child>
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Live Translation</property>
                 <property name="subtitle" translatable="yes">Warning: Your IP address may get banned for API abuse.</property>
-                <property name="visible">True</property>
                 <property name="activatable_widget">live_translation</property>
                 <child>
                   <object class="GtkSwitch" id="live_translation">
@@ -49,21 +44,31 @@
               <object class="AdwComboRow" id="translate_accel">
                 <property name="title" translatable="yes">Translation Shortcut</property>
                 <property name="subtitle" translatable="yes">Unselected choice will be used for line break.</property>
-                <property name="visible">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Default to Auto</property>
+                <property name="subtitle" translatable="yes">Use "Auto" as the default language on every launch</property>
+                <property name="activatable_widget">src_auto</property>
+                <child>
+                  <object class="GtkSwitch" id="src_auto">
+                    <property name="can_focus">True</property>
+                    <property name="valign">center</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
               <object class="AdwComboRow" id="backend">
                 <property name="title" translatable="yes">Translator</property>
                 <property name="subtitle" translatable="yes">Choose from the available translation services.</property>
-                <property name="visible">True</property>
               </object>
             </child>
             <child>
               <object class="AdwActionRow" id="backend_instance_row">
                 <property name="title" translatable="yes">Translator Instance</property>
                 <property name="subtitle" translatable="yes">Specify URL of translation service.</property>
-                <property name="visible">True</property>
                 <child>
                   <object class="GtkStack" id="backend_instance_stack">
                     <property name="can-focus">False</property>
@@ -139,14 +144,12 @@
               </object>
             </child>
             <child>
-              <object class="HdyActionRow">
+              <object class="HdyActionRow" id="tts_row">
                 <property name="title" translatable="yes">Text to Speech</property>
                 <property name="subtitle" translatable="yes">Use Google for Text to Speech functionality.</property>
-                <property name="visible">True</property>
                 <property name="activatable_widget">tts</property>
                 <child>
                   <object class="GtkSwitch" id="tts">
-                    <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="valign">center</property>
                   </object>
@@ -159,7 +162,6 @@
           <object class="AdwPreferencesGroup" id="search_provider">
             <property name="title" translatable="yes">Search Provider</property>
             <property name="description" translatable="yes">Dialect has a GNOME Search Provider. Enabling or disabling Live Translation here will also enable or disable the GNOME Search Provider. This is to reduce the possibility of API abuse. Also make sure that the feature is enabled in GNOME Settings.</property>
-            <property name="visible">True</property>
           </object>
         </child>
       </object>

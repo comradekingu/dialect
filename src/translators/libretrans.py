@@ -7,7 +7,7 @@ import httpx
 from dialect.translators.basetrans import Detected, TranslatorBase, TranslationError, Translation
 
 
-class LibreTranslator(TranslatorBase):
+class Translator(TranslatorBase):
     name = 'libretranslate'
     prettyname = 'LibreTranslate'
     client = None
@@ -18,11 +18,11 @@ class LibreTranslator(TranslatorBase):
         'pronunciation': False,
         'change-instance': True,
     }
-    base_url = ''
+    instance_url = 'translate.astian.org'
 
     def __init__(self, base_url=None, **kwargs):
         if base_url is not None:
-            self.base_url = base_url
+            self.instance_url = base_url
 
         self.client = httpx.Client()
 
@@ -33,19 +33,28 @@ class LibreTranslator(TranslatorBase):
 
     @property
     def detect_url(self):
-        return 'https://' + self.base_url + '/detect'
+        if self.instance_url.startswith('localhost:'):
+            return 'http://' + self.instance_url + '/detect'
+        return 'https://' + self.instance_url + '/detect'
 
     @property
     def translate_url(self):
-        return 'https://' + self.base_url + '/translate'
+        if self.instance_url.startswith('localhost:'):
+            return 'http://' + self.instance_url + '/translate'
+        return 'https://' + self.instance_url + '/translate'
 
     @property
     def lang_url(self):
-        return 'https://' + self.base_url + '/languages'
+        if self.instance_url.startswith('localhost:'):
+            return 'http://' + self.instance_url + '/languages'
+        return 'https://' + self.instance_url + '/languages'
 
     @staticmethod
     def validate_instance_url(url):
-        url = 'https://' + url + '/spec'
+        if url.startswith('localhost:'):
+            url = 'http://' + url + '/spec'
+        else:
+            url = 'https://' + url + '/spec'
         client = httpx.Client()
         try:
             r = client.get(url)
@@ -85,7 +94,8 @@ class LibreTranslator(TranslatorBase):
                 r.json()['translatedText'],
                 {
                     'possible-mistakes': None,
-                    'translation': [],
+                    'src-pronunciation': None,
+                    'dest-pronunciation': None,
                 },
             )
         except Exception as exc:
