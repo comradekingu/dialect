@@ -129,7 +129,7 @@ class DialectWindow(Adw.ApplicationWindow):
 
         # Connect responsive design function
         self.connect('notify::default-width', self.responsive_listener)
-        self.connect('destroy', self.save_translator_settings)
+        self.connect('unrealize', self.save_translator_settings)
 
         self.setup_headerbar()
         self.setup_translation()
