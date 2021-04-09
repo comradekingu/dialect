@@ -39,6 +39,7 @@
 }
 
 .langselector {
+  background-color: @theme_base_color;
   border-radius: 4px;
 }
 

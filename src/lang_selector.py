@@ -4,7 +4,7 @@
 
 import re
 
-from gi.repository import GObject, Gtk
+from gi.repository import Gio, GObject, Gtk
 
 from dialect.define import RES_PATH
 
@@ -32,34 +32,30 @@ class DialectLangSelector(Gtk.Popover):
         # Connect list signals
         self.recent_list.connect('row-activated', self._activated)
         self.lang_list.connect('row-activated', self._activated)
-        # Set filter func to lang list
-        self.lang_list.set_filter_func(self.filter_func, None, False)
         # Connect search entry changed signal
         self.search.connect('changed', self._update_search)
 
-    def filter_func(self, row, _data, _notify_destroy):
-        search = self.search.get_text()
-        return bool(re.search(search, row.name, re.IGNORECASE))
+        self.recent_model = Gio.ListStore.new(LangObject)
+        self.recent_list.bind_model(self.recent_model, self._create_lang_row)
+
+        self.lang_model = Gio.ListStore.new(LangObject)
+        self.lang_list.bind_model(self.lang_model, self._create_lang_row)
 
     def set_languages(self, languages):
         # Clear list
-        children = self.lang_list
-        for child in children:
-            self.lang_list.remove(child)
+        self.lang_model.remove_all()
 
         # Load langs list
         for code, name in languages.items():
             row_selected = (code == self.selected)
-            self.lang_list.insert(LangRow(code, name.capitalize(), row_selected), -1)
+            self.lang_model.append(LangObject(code, name.capitalize(), row_selected))
 
-    def insert_recent(self, code, name, position=-1):
+    def insert_recent(self, code, name):
         row_selected = (code == self.selected)
-        self.recent_list.insert(LangRow(code, name, row_selected), position)
+        self.recent_model.append(LangObject(code, name, row_selected))
 
     def clear_recent(self):
-        children = self.recent_list
-        for child in children:
-            self.recent_list.remove(child)
+        self.recent_model.remove_all()
 
     def refresh_selected(self):
         for lang in self.lang_list:
@@ -78,18 +74,31 @@ class DialectLangSelector(Gtk.Popover):
         # Clear search
         self.search.set_text('')
 
+    @staticmethod
+    def _create_lang_row(lang_object):
+        return LangRow(lang_object.code, lang_object.name, lang_object.selected, lang_object.visible)
+
+    def _filter_func(self):
+        search = self.search.get_text().lower()
+        for object in self.lang_model:
+            if object.name.lower().startswith(search) or object.code.lower().startswith(search):
+                object.visible = True
+            else:
+                object.visible = False
+        self.lang_model.items_changed(0, len(self.lang_model), len(self.lang_model))
+
     def _update_search(self, _entry):
         search = self.search.get_text()
         if search != '':
             self.revealer.set_reveal_child(False)
         else:
             self.revealer.set_reveal_child(True)
-        self.lang_list.invalidate_filter()
+        self._filter_func()
 
 
 class LangRow(Gtk.ListBoxRow):
 
-    def __init__(self, code, name, selected=False, **kwargs):
+    def __init__(self, code, name, selected=False, visible=True, **kwargs):
         super().__init__(**kwargs)
 
         self.code = code
@@ -101,11 +110,14 @@ class LangRow(Gtk.ListBoxRow):
         label.set_halign(Gtk.Align.START)
         label.set_margin_start(4)
         self.get_style_context().add_class('langselector')
-        row_box.prepend(label)
+        row_box.append(label)
         self.selected_icon = Gtk.Image.new_from_icon_name('object-select-symbolic')
-        row_box.prepend(self.selected_icon)
+        row_box.append(self.selected_icon)
         self.set_child(row_box)
+
         self.selected = selected
+        self.set_visible(visible)  # This doesn't work.
+        row_box.set_visible(visible)  # This does, but it's not what we need.
 
     @property
     def selected(self):
@@ -114,3 +126,18 @@ class LangRow(Gtk.ListBoxRow):
     @selected.setter
     def selected(self, value):
         self.selected_icon.set_visible(value)
+
+
+class LangObject(GObject.Object):
+    code = ''
+    name = ''
+    selected = False
+    visible = True
+
+    def __init__(self, code, name, selected=False, visible=True):
+        super().__init__()
+
+        self.code = code
+        self.name = name
+        self.selected = selected
+        self.visible = visible
