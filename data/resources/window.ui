@@ -54,13 +54,12 @@
             <property name="name">error</property>
             <property name="child">
               <object class="GtkBox">
-                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="AdwHeaderBar">
-                    <property name="can-focus">False</property>
                     <property name="title-widget">
                       <object class="GtkLabel">
+                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Dialect</property>
                         <property name="single-line-mode">1</property>
                         <property name="ellipsize">end</property>
@@ -75,7 +74,6 @@
                 <child>
                   <object class="GtkBox">
                     <property name="vexpand">True</property>
-                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
                     <property name="margin-start">12</property>
@@ -104,18 +102,15 @@
                     </child>
                     <child>
                       <object class="GtkBox">
-                        <property name="can-focus">False</property>
                         <property name="spacing">12</property>
                         <property name="halign">center</property>
                         <child>
                           <object class="GtkButton" id="retry_backend_btn">
-                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Retry</property>
                           </object>
                         </child>
                         <child>
                           <object class="GtkButton">
-                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Open preferences</property>
                             <property name="action-name">app.preferences</property>
                           </object>
@@ -152,7 +147,6 @@
                                     <property name="receives-default">True</property>
                                     <child>
                                       <object class="GtkBox">
-                                        <property name="can-focus">False</property>
                                         <property name="spacing">8</property>
                                         <child>
                                           <object class="GtkLabel" id="src_lang_label">
@@ -185,7 +179,6 @@
                                     <property name="receives-default">True</property>
                                     <child>
                                       <object class="GtkBox">
-                                        <property name="can-focus">False</property>
                                         <property name="spacing">8</property>
                                         <child>
                                           <object class="GtkLabel" id="dest_lang_label">
@@ -230,7 +223,6 @@
                     </property>
                     <child>
                       <object class="GtkBox">
-                        <property name="can-focus">False</property>
                         <child>
                           <object class="GtkButton" id="return_btn">
                             <property name="sensitive">False</property>
@@ -328,14 +320,12 @@
                                 </child>
                                 <child>
                                   <object class="GtkInfoBar" id="mistakes">
-                                    <property name="can-focus">False</property>
                                     <property name="revealed">False</property>
                                     <style>
                                       <class name="mistakes" />
                                     </style>
                                     <child>
                                       <object class="GtkBox">
-                                        <property name="can-focus">False</property>
                                         <property name="spacing">8</property>
                                         <child>
                                           <object class="GtkImage">
@@ -356,7 +346,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkBox">
-                                    <property name="can-focus">False</property>
                                     <property name="spacing">6</property>
                                     <child>
                                       <object class="GtkButton" id="clear_btn">
@@ -418,7 +407,6 @@
                             </child>
                             <child>
                               <object class="GtkBox" id="dest_box">
-                                <property name="can-focus">False</property>
                                 <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkScrolledWindow">
@@ -470,7 +458,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkBox">
-                                    <property name="can-focus">False</property>
                                     <property name="spacing">6</property>
                                     <child>
                                       <object class="GtkSpinner" id="trans_spinner">
@@ -575,7 +562,6 @@
                                         <property name="receives-default">1</property>
                                         <child>
                                           <object class="GtkBox">
-                                            <property name="can-focus">False</property>
                                             <property name="spacing">8</property>
                                             <child>
                                               <object class="GtkLabel">
@@ -612,13 +598,11 @@
                     </property>
                     <child type="overlay">
                       <object class="GtkRevealer" id="notification_revealer">
-                        <property name="can-focus">False</property>
                         <property name="halign">center</property>
                         <property name="valign">start</property>
                         <property name="transition-type">none</property>
                         <property name="child">
                           <object class="GtkBox" id="notification_box">
-                            <property name="can-focus">False</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>
                             <property name="spacing">12</property>
