@@ -514,7 +514,7 @@
                         </child>
                         <child>
                           <object class="GtkRevealer" id="actionbar">
-                            <property name="transition-type">none</property>
+                            <property name="transition-type">slide-down</property>
                             <property name="reveal-child">False</property>
                             <property name="child">
                               <object class="GtkBox">
