@@ -130,7 +130,7 @@ class DialectWindow(Adw.ApplicationWindow):
                                   Settings.get().dark_mode)
 
         # Connect responsive design function
-        # self.connect('check-resize', self.responsive_listener)
+        self.connect('notify::default-width', self.responsive_listener)
         self.connect('destroy', self.save_translator_settings)
 
         self.setup_headerbar()
@@ -361,8 +361,8 @@ class DialectWindow(Adw.ApplicationWindow):
         self.src_voice_btn.set_visible(Settings.get().tts != '')
         self.dest_voice_btn.set_visible(Settings.get().tts != '')
 
-    def responsive_listener(self, _window):
-        size = self.get_size()
+    def responsive_listener(self, _window, _param):
+        size = self.get_default_size()
 
         if size.width < 600:
             if self.mobile_mode is False:
