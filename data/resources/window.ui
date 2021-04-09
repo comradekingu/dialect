@@ -389,6 +389,8 @@
                                         <property name="margin-start">4</property>
                                         <property name="margin-end">4</property>
                                         <property name="label">0/5000</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="halign">end</property>
                                         <attributes>
                                           <attribute name="scale" value="0.84999999999999998"></attribute>
                                         </attributes>
@@ -397,7 +399,7 @@
                                         </style>
                                       </object>
                                     </child>
-                                    <child type="end">
+                                    <child>
                                       <object class="GtkButton" id="translate_btn">
                                         <property name="label" translatable="yes">Translate</property>
                                         <property name="sensitive">False</property>
@@ -485,17 +487,19 @@
                                         <property name="icon-name">dialog-warning-symbolic</property>
                                       </object>
                                     </child>
-                                    <child type="end">
+                                    <child>
                                       <object class="GtkButton" id="dest_voice_btn">
                                         <property name="sensitive">False</property>
                                         <property name="receives-default">True</property>
                                         <property name="tooltip-text" translatable="yes">Listen</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="halign">end</property>
                                         <child>
                                           <placeholder />
                                         </child>
                                       </object>
                                     </child>
-                                    <child type="end">
+                                    <child >
                                       <object class="GtkButton" id="copy_btn">
                                         <property name="sensitive">False</property>
                                         <property name="receives-default">True</property>
