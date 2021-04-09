@@ -30,9 +30,7 @@ class DialectWindow(Adw.ApplicationWindow):
     langs_button_box = Gtk.Template.Child()
     switch_btn = Gtk.Template.Child()
     src_lang_btn = Gtk.Template.Child()
-    src_lang_label = Gtk.Template.Child()
     dest_lang_btn = Gtk.Template.Child()
-    dest_lang_label = Gtk.Template.Child()
 
     return_btn = Gtk.Template.Child()
     forward_btn = Gtk.Template.Child()
@@ -134,7 +132,6 @@ class DialectWindow(Adw.ApplicationWindow):
         self.connect('destroy', self.save_translator_settings)
 
         self.setup_headerbar()
-        self.setup_actionbar()
         self.setup_translation()
         self.toggle_mobile_mode()
 
@@ -296,26 +293,18 @@ class DialectWindow(Adw.ApplicationWindow):
                                         self.on_dest_lang_changed)
         # Set popover selector to button
         self.dest_lang_btn.set_popover(self.dest_lang_selector)
-        # self.dest_lang_selector.set_parent(self.dest_lang_btn)
 
         self.langs_button_box.set_homogeneous(False)
 
-        # Switch button
+        # Switch buttons
         self.switch_btn.connect('clicked', self.ui_switch)
+        self.switch_btn2.connect('clicked', self.ui_switch)
 
         # Add menu to menu button
         builder = Gtk.Builder.new_from_resource(f'{RES_PATH}/menu.ui')
         menu = builder.get_object('app-menu')
         menu_popover = Gtk.PopoverMenu.new_from_model(menu)
         self.menu_btn.set_popover(menu_popover)
-
-    def setup_actionbar(self):
-        # Set popovers to lang buttons
-        self.src_lang_btn2.set_popover(self.src_lang_selector)
-        self.dest_lang_btn2.set_popover(self.dest_lang_selector)
-
-        # Switch button
-        self.switch_btn2.connect('clicked', self.ui_switch)
 
     def setup_translation(self):
         # Left buffer
@@ -382,8 +371,10 @@ class DialectWindow(Adw.ApplicationWindow):
             # Change translation box orientation
             self.translator_box.set_orientation(Gtk.Orientation.VERTICAL)
             # Change lang selectors position
-            # self.src_lang_selector.set_parent(self.src_lang_btn2)
-            # self.dest_lang_selector.set_parent(self.dest_lang_btn2)
+            self.src_lang_btn.set_popover(None)
+            self.src_lang_btn2.set_popover(self.src_lang_selector)
+            self.dest_lang_btn.set_popover(None)
+            self.dest_lang_btn2.set_popover(self.dest_lang_selector)
         else:
             # Hide actionbar
             self.actionbar.set_reveal_child(False)
@@ -392,8 +383,10 @@ class DialectWindow(Adw.ApplicationWindow):
             # Reset translation box orientation
             self.translator_box.set_orientation(Gtk.Orientation.HORIZONTAL)
             # Reset lang selectors position
-            # self.src_lang_selector.set_parent(self.src_lang_btn)
-            # self.dest_lang_selector.set_parent(self.dest_lang_btn)
+            self.src_lang_btn2.set_popover(None)
+            self.src_lang_btn.set_popover(self.src_lang_selector)
+            self.dest_lang_btn2.set_popover(None)
+            self.dest_lang_btn.set_popover(self.dest_lang_selector)
 
     def translate(self, text, src_lang, dest_lang):
         """
@@ -488,7 +481,7 @@ class DialectWindow(Adw.ApplicationWindow):
                                          and src_text != '')
 
         if code in self.translator.languages:
-            self.src_lang_label.set_label(self.translator.languages[code].capitalize())
+            self.src_lang_btn.set_label(self.translator.languages[code].capitalize())
             # Updated saved left langs list
             if code in self.src_langs:
                 # Bring lang to the top
@@ -498,7 +491,7 @@ class DialectWindow(Adw.ApplicationWindow):
                 self.src_langs.pop()
                 self.src_langs.insert(0, code)
         else:
-            self.src_lang_label.set_label(_('Auto'))
+            self.src_lang_btn.set_label(_('Auto'))
 
         # Rewrite recent langs
         self.src_lang_selector.clear_recent()
@@ -533,7 +526,7 @@ class DialectWindow(Adw.ApplicationWindow):
                                          and dest_text != '')
 
         name = self.translator.languages[code].capitalize()
-        self.dest_lang_label.set_label(name)
+        self.dest_lang_btn.set_label(name)
         # Updated saved right langs list
         if code in self.dest_langs:
             # Bring lang to the top

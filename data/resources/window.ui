@@ -145,25 +145,7 @@
                                   <object class="GtkMenuButton" id="src_lang_btn">
                                     <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
-                                    <child>
-                                      <object class="GtkBox">
-                                        <property name="spacing">8</property>
-                                        <child>
-                                          <object class="GtkLabel" id="src_lang_label">
-                                            <property name="hexpand">True</property>
-                                            <property name="can-focus">False</property>
-                                            <property name="ellipsize">end</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkImage">
-                                            <property name="can-focus">False</property>
-                                            <property name="icon-name">pan-down-symbolic</property>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
+                                    <property name="icon-name">pan-down-symbolic</property>
                                   </object>
                                 </child>
                                 <child>
@@ -177,25 +159,7 @@
                                   <object class="GtkMenuButton" id="dest_lang_btn">
                                     <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
-                                    <child>
-                                      <object class="GtkBox">
-                                        <property name="spacing">8</property>
-                                        <child>
-                                          <object class="GtkLabel" id="dest_lang_label">
-                                            <property name="hexpand">True</property>
-                                            <property name="can-focus">False</property>
-                                            <property name="ellipsize">end</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkImage">
-                                            <property name="can-focus">False</property>
-                                            <property name="icon-name">pan-down-symbolic</property>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
+                                    <property name="icon-name">pan-down-symbolic</property>
                                   </object>
                                 </child>
                                 <style>
@@ -522,28 +486,10 @@
                                       <object class="GtkMenuButton" id="src_lang_btn2">
                                         <property name="hexpand">True</property>
                                         <property name="sensitive" bind-source="src_lang_btn" bind-property="sensitive" />
+                                        <property name="label" bind-source="src_lang_btn" bind-property="label" />
+                                        <property name="icon-name">pan-down-symbolic</property>
                                         <property name="focus-on-click">False</property>
                                         <property name="receives-default">True</property>
-                                        <child>
-                                          <object class="GtkBox">
-                                            <property name="spacing">8</property>
-                                            <child>
-                                              <object class="GtkLabel">
-                                                <property name="hexpand">True</property>
-                                                <property name="can-focus">False</property>
-                                                <property name="label" bind-source="src_lang_label" bind-property="label" />
-                                                <property name="ellipsize">end</property>
-                                                <property name="xalign">0</property>
-                                              </object>
-                                            </child>
-                                            <child>
-                                              <object class="GtkImage">
-                                                <property name="can-focus">False</property>
-                                                <property name="icon-name">pan-down-symbolic</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
                                       </object>
                                     </child>
                                     <child>
@@ -558,28 +504,10 @@
                                       <object class="GtkMenuButton" id="dest_lang_btn2">
                                         <property name="hexpand">True</property>
                                         <property name="sensitive" bind-source="dest_lang_btn" bind-property="sensitive" />
+                                        <property name="label" bind-source="dest_lang_btn" bind-property="label" />
+                                        <property name="icon-name">pan-down-symbolic</property>
                                         <property name="focus-on-click">0</property>
                                         <property name="receives-default">1</property>
-                                        <child>
-                                          <object class="GtkBox">
-                                            <property name="spacing">8</property>
-                                            <child>
-                                              <object class="GtkLabel">
-                                                <property name="hexpand">True</property>
-                                                <property name="can-focus">False</property>
-                                                <property name="label" bind-source="dest_lang_label" bind-property="label" />
-                                                <property name="ellipsize">end</property>
-                                                <property name="xalign">0</property>
-                                              </object>
-                                            </child>
-                                            <child>
-                                              <object class="GtkImage">
-                                                <property name="can-focus">False</property>
-                                                <property name="icon-name">pan-down-symbolic</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
                                       </object>
                                     </child>
                                     <style>
