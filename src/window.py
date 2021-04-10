@@ -353,7 +353,7 @@ class DialectWindow(Adw.ApplicationWindow):
     def responsive_listener(self, _window, _param):
         size = self.get_default_size()
 
-        if size.width < 600:
+        if size.width < 680:
             if self.mobile_mode is False:
                 self.mobile_mode = True
                 self.toggle_mobile_mode()
