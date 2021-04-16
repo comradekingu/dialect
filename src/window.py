@@ -129,6 +129,7 @@ class DialectWindow(Adw.ApplicationWindow):
 
         # Connect responsive design function
         self.connect('notify::default-width', self.responsive_listener)
+        self.connect('notify::maximized', self.responsive_listener)
         # Save settings on close
         self.connect('unrealize', self.save_settings)
 
@@ -286,7 +287,6 @@ class DialectWindow(Adw.ApplicationWindow):
                                        self.on_src_lang_changed)
         # Set popover selector to button
         self.src_lang_btn.set_popover(self.src_lang_selector)
-        # self.src_lang_selector.set_parent(self.src_lang_btn)
 
         # Right lang selector
         self.dest_lang_selector = DialectLangSelector()
@@ -354,7 +354,7 @@ class DialectWindow(Adw.ApplicationWindow):
     def responsive_listener(self, _window, _param):
         size = self.get_default_size()
 
-        if size.width < 680:
+        if size.width < 680 and not self.is_maximized():
             if self.mobile_mode is False:
                 self.mobile_mode = True
                 self.toggle_mobile_mode()
