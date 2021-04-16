@@ -31,9 +31,9 @@
             "buildsystem" : "meson",
             "sources" : [
                 {
-                  "type" : "git",
-                  "url" : "https://github.com/lazka/sassc.git",
-                  "branch" : "meson"
+                    "type" : "git",
+                    "url" : "https://github.com/lazka/sassc.git",
+                    "branch" : "meson"
                 }
             ]
         },

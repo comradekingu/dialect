@@ -129,7 +129,8 @@ class DialectWindow(Adw.ApplicationWindow):
 
         # Connect responsive design function
         self.connect('notify::default-width', self.responsive_listener)
-        self.connect('unrealize', self.save_translator_settings)
+        # Save settings on close
+        self.connect('unrealize', self.save_settings)
 
         self.setup_headerbar()
         self.setup_translation()
@@ -405,7 +406,9 @@ class DialectWindow(Adw.ApplicationWindow):
         # Run translation
         self.translation(None)
 
-    def save_translator_settings(self, *args, **kwargs):
+    def save_settings(self, *args, **kwargs):
+        size = (self.props.default_width, self.props.default_height)
+        Settings.get().window_size = size
         if self.translator is not None:
             Settings.get().set_src_langs(self.translator.name, self.src_langs)
             Settings.get().set_dest_langs(self.translator.name, self.dest_langs)
@@ -855,7 +858,7 @@ class DialectWindow(Adw.ApplicationWindow):
         self.set_property('backend-loading', True)
 
         # Save previous backend settings
-        self.save_translator_settings()
+        self.save_settings()
 
         # Load translator
         threading.Thread(target=self.load_translator,
