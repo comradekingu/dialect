@@ -7,7 +7,7 @@ import threading
 from gettext import gettext as _
 from tempfile import NamedTemporaryFile
 
-from gi.repository import Gdk, GLib, GObject, Gst, Gtk, Adw
+from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Adw
 
 from dialect.define import APP_ID, MAX_LENGTH, RES_PATH, TRANS_NUMBER
 from dialect.lang_selector import DialectLangSelector
@@ -212,9 +212,10 @@ class DialectWindow(Adw.ApplicationWindow):
             print('Error: ' + str(exc))
 
     def retry_load_translator(self, _button):
-        threading.Thread(target=self.load_translator,
-                         args=[Settings.get().backend],
-                         daemon=True
+        threading.Thread(
+            target=self.load_translator,
+            args=[Settings.get().backend],
+            daemon=True
         ).start()
 
     def on_listen_failed(self):
@@ -480,8 +481,10 @@ class DialectWindow(Adw.ApplicationWindow):
 
         # Disable or enable listen function.
         if self.tts_langs and Settings.get().tts != '':
-            self.src_voice_btn.set_sensitive(code in self.tts_langs
-                                         and src_text != '')
+            self.src_voice_btn.set_sensitive(
+                code in self.tts_langs
+                and src_text != ''
+            )
 
         if code in self.translator.languages:
             self.src_lang_btn.set_label(self.translator.languages[code].capitalize())
@@ -642,19 +645,20 @@ class DialectWindow(Adw.ApplicationWindow):
             self.dest_buffer.get_end_iter(),
             True
         )
-        clipboard = self.dest_buffer.get_clipboard()
-        clipboard.set_text(dest_text)
+        clipboard = Gdk.Display.get_default().get_clipboard()
+        clipboard.set(dest_text)
 
     def ui_paste(self, _button):
-        clipboard = self.src_buffer.get_clipboard()
-        provider = clipboard.get_content()
+        clipboard = Gdk.Display.get_default().get_clipboard()
 
-        if provider is not None:
-            print(provider.get_string())
-        # text = self.clipboard.wait_for_text()
-        # if text is not None:
-        #     end_iter = self.src_buffer.get_end_iter()
-        #     self.src_buffer.insert(end_iter, text)
+        def on_paste(_clipboard, result):
+            text = clipboard.read_text_finish(result)
+            if text is not None:
+                end_iter = self.src_buffer.get_end_iter()
+                self.src_buffer.insert(end_iter, text)
+
+        cancellable = Gio.Cancellable()
+        clipboard.read_text_async(cancellable, on_paste)
 
     def ui_src_voice(self, _button):
         src_text = self.src_buffer.get_text(
