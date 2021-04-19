@@ -439,23 +439,23 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkButton" id="dest_voice_btn">
-                                        <property name="sensitive">False</property>
-                                        <property name="receives-default">True</property>
-                                        <property name="tooltip-text" translatable="yes">Listen</property>
-                                        <property name="hexpand">True</property>
-                                        <property name="halign">end</property>
-                                        <child>
-                                          <placeholder />
-                                        </child>
-                                      </object>
-                                    </child>
-                                    <child >
                                       <object class="GtkButton" id="copy_btn">
                                         <property name="sensitive">False</property>
                                         <property name="receives-default">True</property>
                                         <property name="tooltip-text" translatable="yes">Copy</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="halign">end</property>
                                         <property name="icon-name">edit-copy-symbolic</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="dest_voice_btn">
+                                        <property name="sensitive">False</property>
+                                        <property name="receives-default">True</property>
+                                        <property name="tooltip-text" translatable="yes">Listen</property>
+                                        <child>
+                                          <placeholder />
+                                        </child>
                                       </object>
                                     </child>
                                     <style>

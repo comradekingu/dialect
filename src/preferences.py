@@ -49,16 +49,6 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
     def setup(self):
         # Disable search, we have few preferences
         self.set_search_enabled(False)
-        # Temporal fix for crash
-        self.connect('destroy', self._unbind_settings)
-
-        # Setup translate accel combo row
-        model = Gio.ListStore.new(Adw.ValueObject)
-        options = ['Ctrl + Enter', 'Enter']
-        for index, value in enumerate(options):
-            model.insert(index, Adw.ValueObject.new(value))
-        self.translate_accel.bind_name_model(model,
-                                             Adw.ValueObject.dup_string)
 
         # Setup backends combo row
         self.backend_model = Gio.ListStore.new(BackendObject)
@@ -70,14 +60,15 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
             self.backend_model.insert(index, value)
             if value.name == Settings.get().backend:
                 selected_backend_index = index
-        self.backend.bind_name_model(self.backend_model,
-                                     BackendObject.get_name)
+        self.backend.set_model(self.backend_model)
 
         # Bind preferences with GSettings
+        Settings.get().bind('dark-mode', self.dark_mode, 'active',
+                            Gio.SettingsBindFlags.DEFAULT)
         Settings.get().bind('live-translation', self.live_translation, 'active',
                             Gio.SettingsBindFlags.DEFAULT)
         Settings.get().bind('translate-accel', self.translate_accel,
-                            'selected-index', Gio.SettingsBindFlags.DEFAULT)
+                            'selected', Gio.SettingsBindFlags.DEFAULT)
         Settings.get().bind('src-auto', self.src_auto, 'active',
                             Gio.SettingsBindFlags.DEFAULT)
 
@@ -93,8 +84,8 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
         self.live_translation.connect('notify::active', self._toggle_accel_pref)
 
         # Switch backends
-        self.backend.set_selected_index(selected_backend_index)
-        self.backend.connect('notify::selected-index', self._switch_backends)
+        self.backend.set_selected(selected_backend_index)
+        self.backend.connect('notify::selected', self._switch_backends)
         self.parent.connect('notify::backend-loading', self._on_backend_loading)
 
         # Toggle TTS
@@ -108,30 +99,34 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
         self.__check_instance_support()
 
         self.instance_save_image = Gtk.Image.new_from_icon_name('emblem-ok-symbolic')
-        self.backend_instance_save.add(self.instance_save_image)
+        self.backend_instance_save.set_child(self.instance_save_image)
         self.instance_save_spinner = Gtk.Spinner()
         self.instance_save_image.show()
         self.instance_save_spinner.show()
 
         self.error_popover = Gtk.Popover(
-            relative_to=self.backend_instance, can_focus=False, modal=False)
+            pointing_to=self.backend_instance.get_allocation(),
+            can_focus=False,
+        )
         self.error_label = Gtk.Label(label='Not a valid instance')
         error_icon = Gtk.Image.new_from_icon_name('dialog-error-symbolic')
-        error_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin=8, spacing=8)
+        error_box = Gtk.Box(
+            orientation=Gtk.Orientation.HORIZONTAL,
+            margin_start=8,
+            margin_end=8,
+            margin_top=8,
+            margin_bottom=8,
+            spacing=8
+        )
         error_box.prepend(error_icon)
         error_box.prepend(self.error_label)
-        self.error_popover.add(error_box)
+        self.error_popover.set_child(error_box)
         self.error_popover.set_position(Gtk.PositionType.BOTTOM)
         self.error_popover.hide()
 
         # Search Provider
         if os.getenv('XDG_CURRENT_DESKTOP') != 'GNOME':
             self.search_provider.hide()
-
-    def _unbind_settings(self,  *args, **kwargs):
-        Settings.get().unbind(self.dark_mode, 'active')
-        Settings.get().unbind(self.live_translation, 'active')
-        Settings.get().unbind(self.src_auto, 'active')
 
     def _on_settings_changed(self, _settings, key):
         backend = Settings.get().backend
@@ -170,7 +165,7 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
             ).start()
 
     def _switch_backends(self, row, _value):
-        backend = self.backend_model[row.get_selected_index()].name
+        backend = self.backend_model[row.get_selected()].name
         Settings.get().backend = backend
         self.__check_instance_support()
         self.parent.change_backends(backend)
@@ -194,9 +189,10 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
 
         if new_value != old_value:
             # Validate
-            threading.Thread(target=self.__validate_new_backend_instance,
-                             args=[new_value],
-                             daemon=True
+            threading.Thread(
+                target=self.__validate_new_backend_instance,
+                args=[new_value],
+                daemon=True
             ).start()
         else:
             self.backend_instance_stack.set_visible_child_name('view')
@@ -220,15 +216,13 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
         def spinner_start():
             self.backend.set_sensitive(False)
             self.backend_instance_row.set_sensitive(False)
-            self.backend_instance_save.remove(self.instance_save_image)
-            self.backend_instance_save.add(self.instance_save_spinner)
+            self.backend_instance_save.set_child(self.instance_save_spinner)
             self.instance_save_spinner.start()
 
         def spinner_end():
             self.backend.set_sensitive(True)
             self.backend_instance_row.set_sensitive(True)
-            self.backend_instance_save.remove(self.instance_save_spinner)
-            self.backend_instance_save.add(self.instance_save_image)
+            self.backend_instance_save.set_child(self.instance_save_image)
             self.backend_instance_label.set_label(Settings.get().get_instance_url(backend))
             self.instance_save_spinner.stop()
 
