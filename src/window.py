@@ -135,7 +135,7 @@ class DialectWindow(Adw.ApplicationWindow):
 
         self.setup_headerbar()
         self.setup_translation()
-        self.toggle_mobile_mode()
+        self.responsive_listener(launch=True)
 
         # Load translator
         self.retry_backend_btn.connect('clicked', self.retry_load_translator)
@@ -352,10 +352,15 @@ class DialectWindow(Adw.ApplicationWindow):
         self.src_voice_btn.set_visible(Settings.get().tts != '')
         self.dest_voice_btn.set_visible(Settings.get().tts != '')
 
-    def responsive_listener(self, _window, _param):
-        size = self.get_default_size()
+    def responsive_listener(self, _window=None, _param=None, launch=False):
+        if launch:
+            width, height = Settings.get().window_size
+        else:
+            size = self.get_default_size()
+            width = size.width
+            height = size.height
 
-        if size.width < 680 and not self.is_maximized():
+        if width < 680 and not self.is_maximized():
             if self.mobile_mode is False:
                 self.mobile_mode = True
                 self.toggle_mobile_mode()
@@ -363,6 +368,9 @@ class DialectWindow(Adw.ApplicationWindow):
             if self.mobile_mode is True:
                 self.mobile_mode = False
                 self.toggle_mobile_mode()
+
+        if launch:
+            self.set_default_size(width-52, height-52)
 
     def toggle_mobile_mode(self):
         if self.mobile_mode:
@@ -408,8 +416,8 @@ class DialectWindow(Adw.ApplicationWindow):
         self.translation(None)
 
     def save_settings(self, *args, **kwargs):
-        size = (self.props.default_width, self.props.default_height)
-        Settings.get().window_size = size
+        size = self.get_default_size()
+        Settings.get().window_size = (size.width, size.height)
         if self.translator is not None:
             Settings.get().set_src_langs(self.translator.name, self.src_langs)
             Settings.get().set_dest_langs(self.translator.name, self.dest_langs)
