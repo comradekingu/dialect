@@ -370,7 +370,7 @@ class DialectWindow(Adw.ApplicationWindow):
                 self.toggle_mobile_mode()
 
         if launch:
-            self.set_default_size(width-52, height-52)
+            self.set_default_size(width, height)
 
     def toggle_mobile_mode(self):
         if self.mobile_mode:
