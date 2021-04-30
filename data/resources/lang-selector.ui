@@ -9,17 +9,11 @@
         <property name="spacing">8</property>
         <child>
           <object class="GtkSearchEntry" id="search">
-            <property name="margin_top">8</property>
-            <property name="margin_start">8</property>
-            <property name="margin_end">8</property>
           </object>
         </child>
         <child>
           <object class="GtkScrolledWindow" id="scroll">
             <property name="vexpand">True</property>
-            <property name="margin_bottom">8</property>
-            <property name="margin_start">8</property>
-            <property name="margin_end">8</property>
             <child>
               <object class="GtkViewport">
                 <child>
@@ -32,19 +26,13 @@
                           <object class="GtkBox">
                             <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkListBox" id="recent_list">
+                              <object class="GtkListView" id="recent_list">
                                 <property name="can_focus">False</property>
-                                <property name="selection-mode">none</property>
-                                <style>
-                                  <class name="background"/>
-                                </style>
+                                <property name="single-click-activate">true</property>
                               </object>
                             </child>
                             <child>
                               <object class="GtkSeparator" id="separator">
-                                <property name="can_focus">False</property>
-                                <property name="margin-start">8</property>
-                                <property name="margin-end">8</property>
                                 <property name="margin-top">8</property>
                                 <property name="margin-bottom">8</property>
                               </object>
@@ -54,11 +42,10 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkListBox" id="lang_list">
-                        <property name="can_focus">False</property>
-                        <property name="selection-mode">none</property>
+                      <object class="GtkListView" id="lang_list">
+                        <property name="single-click-activate">true</property>
                         <style>
-                          <class name="background"/>
+                          <class name="navigation-sidebar"/>
                         </style>
                       </object>
                     </child>

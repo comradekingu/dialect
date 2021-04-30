@@ -38,10 +38,10 @@
   border-top-left-radius: 9px;
 }
 
+/*
 .langselector {
-  background-color: @theme_base_color;
   border-radius: 4px;
-}
+}*/
 
 .bottomlang {
   background: @theme_bg_color;
