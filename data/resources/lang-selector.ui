@@ -44,9 +44,6 @@
                     <child>
                       <object class="GtkListView" id="lang_list">
                         <property name="single-click-activate">true</property>
-                        <style>
-                          <class name="navigation-sidebar"/>
-                        </style>
                       </object>
                     </child>
                   </object>
