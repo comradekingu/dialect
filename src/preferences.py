@@ -244,13 +244,13 @@ class DialectPreferencesWindow(Adw.PreferencesWindow):
         GLib.idle_add(spinner_end)
 
 class BackendObject(GObject.Object):
-    name = None
-    prettyname = None
+    __gtype_name__ = 'BackendObject'
+
+    name = GObject.Property(type=str)
+    prettyname = GObject.Property(type=str)
 
     def __init__(self, name, prettyname):
         super().__init__()
-        self.name = name
-        self.prettyname = prettyname
 
-    def get_name(self):
-        return self.prettyname
+        self.set_property('name', name)
+        self.set_property('prettyname', prettyname)

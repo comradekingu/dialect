@@ -69,6 +69,9 @@
               <object class="AdwComboRow" id="backend">
                 <property name="title" translatable="yes">Translator</property>
                 <property name="subtitle" translatable="yes">Choose from the available translation services.</property>
+                <property name="expression">
+                  <lookup name="prettyname" type="BackendObject"></lookup>
+                </property>
               </object>
             </child>
             <child>
