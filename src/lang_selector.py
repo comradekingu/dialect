@@ -60,8 +60,7 @@ class DialectLangSelector(Gtk.Popover):
 
         # Load langs list
         for code, name in languages.items():
-            selected = (code == self.selected)
-            self.lang_model.append(LangObject(code, name.capitalize(), selected))
+            self.lang_model.append(LangObject(code, name.capitalize()))
 
     def insert_recent(self, code, name):
         row_selected = (code == self.selected)
