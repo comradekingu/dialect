@@ -2,19 +2,19 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <object class="GtkAboutDialog" id="about">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="modal">True</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="program_name">Dialect</property>
+    <property name="destroy-with-parent">True</property>
+    <property name="program-name">Dialect</property>
     <property name="copyright" translatable="yes">Copyright 2020-2021 The Dialect Authors</property>
     <property name="comments" translatable="yes">A translation app for GNOME.</property>
     <property name="website">https://github.com/dialect-app/dialect</property>
-    <property name="website_label" translatable="yes">Github page</property>
+    <property name="website-label" translatable="yes">Github page</property>
     <property name="authors">gi-lom
 Mufeed Ali
 Rafael Mardojai CM
 </property>
     <property name="translator-credits" translatable="yes" comments="Replace me with your names.">translator-credits</property>
-    <property name="license_type">gpl-3-0</property>
+    <property name="license-type">gpl-3-0</property>
   </object>
 </interface>

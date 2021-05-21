@@ -99,7 +99,7 @@ class DialectLangSelector(Gtk.Popover):
         else:
             self.revealer.set_reveal_child(True)
 
-        self.filter.emit('changed',Gtk.FilterChange.DIFFERENT)
+        self.filter.emit('changed', Gtk.FilterChange.DIFFERENT)
 
 class LangObject(GObject.Object):
     __gtype_name__ = 'LangObject'
@@ -114,4 +114,3 @@ class LangObject(GObject.Object):
         self.set_property('code', code)
         self.set_property('name', name)
         self.set_property('selected', selected)
-
